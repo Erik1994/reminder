@@ -31,6 +31,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+    }
+    buildFeatures {
+        viewBinding true
     }
 }
 
@@ -43,6 +47,7 @@ dependencies {
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+    implementation "androidx.collection:collection-ktx:1.2.0"
 
 
     //lifecycle
@@ -51,7 +56,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
-    implementation "androidx.lifecycle:lifecycle-extensions:2.2.0"
 
     //activity fragment
     implementation "androidx.activity:activity-ktx:$ui_ktx_version"
@@ -65,8 +69,8 @@ dependencies {
 
 
     //coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.1-native-mt"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1-native-mt"
 
     //navigation components
     implementation "androidx.navigation:navigation-runtime-ktx:$nav_component_version"
@@ -90,6 +94,4 @@ dependencies {
     //workmanager
     implementation "androidx.work:work-runtime:$work_manager_version"
 
-    //color picker dialog
-    implementation "com.github.skydoves:colorpickerview:2.1.7"
 }

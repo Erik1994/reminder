@@ -7,7 +7,7 @@ buildscript {
         ui_ktx_version = "1.4.0"
         room_version = "2.4.2"
         nav_component_version = "2.4.2"
-        koin_version = "3.1.4"
+        koin_version = "3.1.6"
         glide_version = "4.12.0"
         datastore_version = "1.0.0"
         work_manager_version = "2.7.1"
