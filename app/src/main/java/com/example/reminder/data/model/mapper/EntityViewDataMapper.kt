@@ -9,6 +9,7 @@ val REMINDER_ENTITY_TO_VIEW_DATA_MAPPER = object : Mapper<ReminderEntity, Remind
         title = source.title,
         description = source.description,
         dateTime = source.dateTime,
+        workId = source.workId,
         isComplited = source.isComplited
     )
 }
@@ -19,6 +20,7 @@ val VIEW_DATA_MAPPER_TO_REMINDER_ENTITY = object : Mapper<ReminderViewData, Remi
         title = source.title,
         description = source.description,
         dateTime = source.dateTime,
+        workId = source.workId,
         isComplited = source.isComplited
     )
 }

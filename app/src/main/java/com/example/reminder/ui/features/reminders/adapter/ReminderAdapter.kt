@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.onEach
 
 class ReminderAdapter : ListAdapter<ReminderViewData, ReminderAdapter.ViewHolder>(DiffCallBack()) {
     private var coroutineScope: CoroutineScope? = null
-    private val clicksSharedFlow = MutableSharedFlow<Int?>()
+    private val clicksSharedFlow = MutableSharedFlow<String?>()
     fun clicksFlow() = clicksSharedFlow.asSharedFlow()
 
 
@@ -60,9 +60,9 @@ class ReminderAdapter : ListAdapter<ReminderViewData, ReminderAdapter.ViewHolder
                 } else {
                     syncImage.setImageResource(R.drawable.ic_time)
                 }
+                titleTv.text = item.title
                 dateTime.text = item.dateTime.formatDate(dateTimeFormat())
                 descriptionTv.text = item.description
-                titleTv.text = item.title
             }
         }
 
@@ -93,6 +93,6 @@ class ReminderAdapter : ListAdapter<ReminderViewData, ReminderAdapter.ViewHolder
             oldItem: ReminderViewData,
             newItem: ReminderViewData
         ): Boolean =
-            oldItem.id == newItem.id && oldItem.description == newItem.description && oldItem.isComplited == newItem.isComplited
+            oldItem.title == newItem.title && oldItem.description == newItem.description && oldItem.isComplited == newItem.isComplited
     }
 }

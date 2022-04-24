@@ -14,9 +14,11 @@ import com.example.reminder.data.model.data.ReminderViewData
 import com.example.reminder.databinding.FragmentAddEditReminderBinding
 import com.example.reminder.ui.common.BaseFragment
 import com.example.reminder.ui.extensions.*
+import com.example.reminder.ui.features.reminders.ReminderVIewModel
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -25,12 +27,13 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
     override val viewModel: AddEditReminderViewModel by viewModel()
     private var binding: FragmentAddEditReminderBinding? = null
     private val args: AddEditReminderFragmentArgs by navArgs()
-    private var reminderId: Int? = null
+    private var reminderId: String? = null
     private val calendar = Calendar.getInstance()
+    private var workId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        reminderId = if (args.id.isNotEmpty()) args.id.toInt() else null
+        reminderId = args.id.ifEmpty { null }
     }
 
     override fun onCreateView(
@@ -86,7 +89,9 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
                     id = remId,
                     title = title,
                     description = description,
-                    dateTime = dateTime
+                    dateTime = dateTime,
+                    workId = workId ?: emptyString(),
+                    isComplited = dateTime < System.currentTimeMillis()
                 )
                 viewModel.updateReminder(reminder)
             } ?: run {
@@ -110,7 +115,10 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
             requireContext(), dateSetListener,
             calendar[Calendar.YEAR], calendar[Calendar.MONTH], calendar[Calendar.DAY_OF_MONTH]
         )
-        datePickerDialog.show()
+        datePickerDialog.apply {
+            datePicker.minDate = System.currentTimeMillis() - 1000
+            show()
+        }
     }
 
     private fun openTimePicker() {
@@ -140,6 +148,7 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
                     titleTv.setText(reminder.title)
                     descriptionTv.setText(reminder.description)
                     dateTime.text = reminder.dateTime.formatDate(dateTimeFormat())
+                    workId = reminder.workId
                 }
             } ?: showSnackbar(getString(R.string.reminder_finding_issue_massage))
         }

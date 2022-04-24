@@ -6,6 +6,6 @@ import com.example.reminder.domain.usecase.DeleteReminderByIdUseCase
 class DeleteReminderByIdUseCaseImpl(
     private val repository: ReminderRepository
 ) : DeleteReminderByIdUseCase {
-    override suspend fun invoke(id: Int) =
+    override suspend fun invoke(id: String) =
         repository.deleteReminderById(id)
 }

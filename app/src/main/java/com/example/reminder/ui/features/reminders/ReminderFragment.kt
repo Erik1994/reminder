@@ -1,5 +1,6 @@
 package com.example.reminder.ui.features.reminders
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -41,7 +42,7 @@ class ReminderFragment : BaseFragment(R.layout.fragment_reminder) {
         override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
             val position = viewHolder.layoutPosition
             val reminder = reminderAdapter.currentList[position]
-            viewModel.deleteReminderById(reminder.id)
+            viewModel.deleteReminderById(reminder.id, reminder.workId)
             showSnackbar(
                 getString(R.string.reminder_deleted_message),
                 getString(R.string.undo)
@@ -82,9 +83,7 @@ class ReminderFragment : BaseFragment(R.layout.fragment_reminder) {
     private fun observeClicks() {
         binding?.fabAddReminder?.clicks()?.onEach {
             viewModel.navigate(
-                ReminderFragmentDirections.actionReminderFragmentToAddEditReminderFragment(
-                    emptyString()
-                )
+                ReminderFragmentDirections.actionReminderFragmentToAddEditReminderFragment(emptyString())
             )
         }?.launchIn(viewLifecycleOwner.lifecycleScope)
 
@@ -92,9 +91,7 @@ class ReminderFragment : BaseFragment(R.layout.fragment_reminder) {
             .onEach { id ->
                 id?.let {
                     viewModel.navigate(
-                        ReminderFragmentDirections.actionReminderFragmentToAddEditReminderFragment(
-                            it.toString()
-                        )
+                        ReminderFragmentDirections.actionReminderFragmentToAddEditReminderFragment(it)
                     )
                 }
             }.launchIn(viewLifecycleOwner.lifecycleScope)

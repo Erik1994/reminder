@@ -8,7 +8,7 @@ class ReminderRepositoryImpl(private val reminderLocalDataSource: ReminderLocalD
     override fun getAllReminders(): Flow<List<ReminderEntity>> =
         reminderLocalDataSource.getAllReminders()
 
-    override suspend fun deleteReminderById(id: Int) =
+    override suspend fun deleteReminderById(id: String) =
         reminderLocalDataSource.deleteReminderById(id)
 
     override suspend fun addReminder(reminderEntity: ReminderEntity) =
@@ -20,9 +20,9 @@ class ReminderRepositoryImpl(private val reminderLocalDataSource: ReminderLocalD
     override suspend fun deleteReminders(reminderEntityList: List<ReminderEntity>) =
         reminderLocalDataSource.deleteReminders(reminderEntityList)
 
-    override suspend fun updateComplitionById(id: Int) =
+    override suspend fun updateComplitionById(id: String) =
         reminderLocalDataSource.updateComplitionById(id)
 
-    override suspend fun getReminderById(id: Int): ReminderEntity? =
+    override suspend fun getReminderById(id: String): ReminderEntity? =
         reminderLocalDataSource.getReminderById(id)
 }

@@ -10,7 +10,7 @@ class ReminderLocalDataSourceImpl(
     override fun getAllReminders(): Flow<List<ReminderEntity>> =
         reminderDao.getAllReminders()
 
-    override suspend fun deleteReminderById(id: Int) =
+    override suspend fun deleteReminderById(id: String) =
         reminderDao.deleteReminderById(id)
 
     override suspend fun addReminder(reminderEntity: ReminderEntity) =
@@ -22,9 +22,9 @@ class ReminderLocalDataSourceImpl(
     override suspend fun deleteReminders(reminderEntityList: List<ReminderEntity>) =
         reminderDao.updateReminders(*reminderEntityList.toTypedArray())
 
-    override suspend fun updateComplitionById(id: Int)  =
+    override suspend fun updateComplitionById(id: String)  =
         reminderDao.updateComplitionById(id)
 
-    override suspend fun getReminderById(id: Int): ReminderEntity? =
+    override suspend fun getReminderById(id: String): ReminderEntity? =
         reminderDao.getReminderById(id)
 }

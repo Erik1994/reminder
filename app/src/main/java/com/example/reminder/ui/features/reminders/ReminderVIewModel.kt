@@ -1,6 +1,7 @@
 package com.example.reminder.ui.features.reminders
 
 import androidx.lifecycle.viewModelScope
+import androidx.work.WorkManager
 import com.example.reminder.domain.dispatchers.AppDispatchers
 import com.example.reminder.data.model.data.ReminderViewData
 import com.example.reminder.domain.usecase.AddReminderUseCase
@@ -16,8 +17,9 @@ class ReminderVIewModel(
     private val getRemindersUseCase: GetRemindersUseCase,
     private val deleteReminderByIdUseCase: DeleteReminderByIdUseCase,
     private val addReminderUseCase: AddReminderUseCase,
-    private val appDispatchers: AppDispatchers
-) : BaseViewModel() {
+    private val appDispatchers: AppDispatchers,
+    workManager: WorkManager
+) : BaseViewModel(workManager) {
     private val _getremindersSharedFlow = MutableSharedFlow<List<ReminderViewData>>(
         replay = 1,
         onBufferOverflow = BufferOverflow.DROP_OLDEST
@@ -29,8 +31,9 @@ class ReminderVIewModel(
         return@withContext getRemindersUseCase()
     }
 
-    fun deleteReminderById(id: Int) {
+    fun deleteReminderById(id: String, workerID: String) {
         viewModelScope.launch(appDispatchers.ioDispatcher) {
+            cancelEnquedWorkByID(workerID)
             deleteReminderByIdUseCase(id)
         }
     }
@@ -43,6 +46,8 @@ class ReminderVIewModel(
 
     fun addReminder(reminderViewData: ReminderViewData) {
         viewModelScope.launch(appDispatchers.ioDispatcher) {
+            val workId = enqueWorkAndReturnId(reminderId = reminderViewData.id, reminderTime = reminderViewData.dateTime)
+            reminderViewData.workId = workId
             addReminderUseCase(reminderViewData)
         }
     }

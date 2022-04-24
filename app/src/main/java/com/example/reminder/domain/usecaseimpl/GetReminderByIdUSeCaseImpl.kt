@@ -8,7 +8,7 @@ import com.example.reminder.domain.usecase.GetReminderByIdUseCase
 class GetReminderByIdUSeCaseImpl(
     private val repository: ReminderRepository
 ) : GetReminderByIdUseCase {
-    override suspend fun invoke(id: Int): ReminderViewData? =
+    override suspend fun invoke(id: String): ReminderViewData? =
         REMINDER_ENTITY_TO_VIEW_DATA_MAPPER.mapIfNotNull(repository.getReminderById(id))
 
 }

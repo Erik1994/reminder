@@ -6,6 +6,6 @@ import com.example.reminder.domain.usecase.UpdateComplitionByIdUseCase
 class UpdateComplitionByIdUseCaseImpl(
     private val repository: ReminderRepository
 ) : UpdateComplitionByIdUseCase {
-    override suspend fun invoke(id: Int) =
+    override suspend fun invoke(id: String) =
         repository.updateComplitionById(id)
 }

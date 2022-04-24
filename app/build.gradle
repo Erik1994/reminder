@@ -93,5 +93,6 @@ dependencies {
 
     //workmanager
     implementation "androidx.work:work-runtime:$work_manager_version"
+    implementation "androidx.work:work-runtime-ktx:$work_manager_version"
 
 }

@@ -12,16 +12,16 @@ interface ReminderDao {
     fun getAllReminders(): Flow<List<ReminderEntity>>
 
     @Query("DELETE FROM $REMINDER_TABLE_NAME WHERE id = :id")
-    suspend fun deleteReminderById(id: Int)
+    suspend fun deleteReminderById(id: String)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addReminder(reminderEntity: ReminderEntity)
 
     @Query("UPDATE $REMINDER_TABLE_NAME SET isComplited = 1 WHERE id = :id")
-    suspend fun updateComplitionById(id: Int)
+    suspend fun updateComplitionById(id: String)
 
     @Query("SELECT * FROM $REMINDER_TABLE_NAME WHERE id = :id")
-    suspend fun getReminderById(id: Int): ReminderEntity?
+    suspend fun getReminderById(id: String): ReminderEntity?
 
     @Update
     suspend fun updateReminders(vararg reminderEntity: ReminderEntity)

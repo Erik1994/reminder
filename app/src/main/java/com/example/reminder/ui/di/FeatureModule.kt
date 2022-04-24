@@ -11,7 +11,8 @@ val featureModule = module {
             getRemindersUseCase = get(),
             deleteReminderByIdUseCase = get(),
             addReminderUseCase = get(),
-            appDispatchers = get()
+            appDispatchers = get(),
+            workManager = get()
         )
     }
 
@@ -20,7 +21,8 @@ val featureModule = module {
             addReminderUseCase = get(),
             updateReminderUseCase = get(),
             getReminderByIdUseCase = get(),
-            appDispatchers = get()
+            appDispatchers = get(),
+            workManager = get()
         )
     }
 }
