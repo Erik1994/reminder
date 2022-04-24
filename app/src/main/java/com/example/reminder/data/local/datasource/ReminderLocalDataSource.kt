@@ -10,7 +10,11 @@ interface ReminderLocalDataSource {
 
     suspend fun addReminder(reminderEntity: ReminderEntity)
 
-    suspend fun updateReminders(reminderEntityList: List<ReminderEntity>)
+    suspend fun updateReminders(reminder: ReminderEntity)
 
     suspend fun deleteReminders(reminderEntityList: List<ReminderEntity>)
+
+    suspend fun updateComplitionById(id: Int)
+
+    suspend fun getReminderById(id: Int): ReminderEntity?
 }

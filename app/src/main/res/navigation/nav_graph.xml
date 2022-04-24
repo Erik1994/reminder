@@ -8,10 +8,13 @@
     <fragment
         android:id="@+id/reminderFragment"
         android:name="com.example.reminder.ui.features.reminders.ReminderFragment"
-        android:label="Reminder" >
+        android:label="Reminder"
+        tools:layout="@layout/fragment_reminder">
         <action
             android:id="@+id/action_reminderFragment_to_addEditReminderFragment"
-            app:destination="@id/addEditReminderFragment" />
+            app:destination="@id/addEditReminderFragment"
+            app:enterAnim="@anim/fade_in"
+            app:popExitAnim="@anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/addEditReminderFragment"
@@ -21,10 +24,10 @@
         <action
             android:id="@+id/action_addEditReminderFragment_to_reminderFragment"
             app:destination="@id/reminderFragment"
+            app:enterAnim="@anim/fade_out"
             app:popUpTo="@id/reminderFragment" />
         <argument
             android:name="id"
-            app:argType="integer"
-            android:defaultValue="-1" />
+            app:argType="string" />
     </fragment>
 </navigation>

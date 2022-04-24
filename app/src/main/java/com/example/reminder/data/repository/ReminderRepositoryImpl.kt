@@ -14,9 +14,15 @@ class ReminderRepositoryImpl(private val reminderLocalDataSource: ReminderLocalD
     override suspend fun addReminder(reminderEntity: ReminderEntity) =
         reminderLocalDataSource.addReminder(reminderEntity)
 
-    override suspend fun updateReminders(reminderEntityList: List<ReminderEntity>) =
-        reminderLocalDataSource.updateReminders(reminderEntityList)
+    override suspend fun updateReminders(reminder: ReminderEntity) =
+        reminderLocalDataSource.updateReminders(reminder)
 
     override suspend fun deleteReminders(reminderEntityList: List<ReminderEntity>) =
         reminderLocalDataSource.deleteReminders(reminderEntityList)
+
+    override suspend fun updateComplitionById(id: Int) =
+        reminderLocalDataSource.updateComplitionById(id)
+
+    override suspend fun getReminderById(id: Int): ReminderEntity? =
+        reminderLocalDataSource.getReminderById(id)
 }

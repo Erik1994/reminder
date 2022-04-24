@@ -8,6 +8,8 @@ import com.example.reminder.data.REMINDER_TABLE_NAME
 data class ReminderEntity (
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    val title: String,
     val description: String,
-    val dateTime: Long
+    val dateTime: Long,
+    var isComplited: Boolean = false
 )

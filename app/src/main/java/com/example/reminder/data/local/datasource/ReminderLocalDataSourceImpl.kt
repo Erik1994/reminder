@@ -1,13 +1,11 @@
 package com.example.reminder.data.local.datasource
 
-import android.content.SharedPreferences
 import com.example.reminder.data.local.db.dao.ReminderDao
 import com.example.reminder.data.model.entity.ReminderEntity
 import kotlinx.coroutines.flow.Flow
 
 class ReminderLocalDataSourceImpl(
-    private val reminderDao: ReminderDao,
-    private val sharedPreferences: SharedPreferences
+    private val reminderDao: ReminderDao
 ) : ReminderLocalDataSource {
     override fun getAllReminders(): Flow<List<ReminderEntity>> =
         reminderDao.getAllReminders()
@@ -18,10 +16,15 @@ class ReminderLocalDataSourceImpl(
     override suspend fun addReminder(reminderEntity: ReminderEntity) =
         reminderDao.addReminder(reminderEntity)
 
-    override suspend fun updateReminders(reminderEntityList: List<ReminderEntity>) =
-        reminderDao.updateReminders(*reminderEntityList.toTypedArray())
+    override suspend fun updateReminders(reminder: ReminderEntity) =
+        reminderDao.updateReminders(reminder)
 
     override suspend fun deleteReminders(reminderEntityList: List<ReminderEntity>) =
         reminderDao.updateReminders(*reminderEntityList.toTypedArray())
 
+    override suspend fun updateComplitionById(id: Int)  =
+        reminderDao.updateComplitionById(id)
+
+    override suspend fun getReminderById(id: Int): ReminderEntity? =
+        reminderDao.getReminderById(id)
 }

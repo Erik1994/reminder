@@ -32,8 +32,7 @@ val localModule = module {
 
     factory<ReminderLocalDataSource> {
         ReminderLocalDataSourceImpl(
-            reminderDao = get(),
-            sharedPreferences = get()
+            reminderDao = get()
         )
     }
 
