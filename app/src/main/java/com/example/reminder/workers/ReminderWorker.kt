@@ -30,12 +30,12 @@ class ReminderWorker(ctx: Context, params: WorkerParameters): CoroutineWorker(ct
     override suspend fun doWork(): Result {
         val context = applicationContext
         val id = inputData.getString(REMINDER_ID_KEY) ?: emptyString()
-        updateReminderComplitionById(id)
         val reminder = getReminderById(id)
         return reminder?.let {
             val title = it.title
             val message = it.description
             showReminderNotification(context, title, message)
+            updateReminderComplitionById(id)
             Result.success()
         } ?: Result.failure()
     }
@@ -74,14 +74,14 @@ class ReminderWorker(ctx: Context, params: WorkerParameters): CoroutineWorker(ct
         val soundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
         // Create the notification
         val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setSmallIcon(R.drawable.reminders)
+            .setSmallIcon(R.drawable.ic_note)
             .setContentTitle(title)
             .setContentText(message)
             .setSound(soundUri)
             .setStyle(NotificationCompat.InboxStyle())
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setVibrate(longArrayOf(500,500,500,500,500,500,500,500,500))
+
 
         // Show the notification
         NotificationManagerCompat.from(context).notify(NOTIFICATION_ID, builder.build())

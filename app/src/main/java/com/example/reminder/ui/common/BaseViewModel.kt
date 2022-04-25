@@ -30,10 +30,10 @@ abstract class BaseViewModel(private val workManager: WorkManager) : ViewModel()
     }
 
     protected fun enqueWorkAndReturnId(reminderTime: Long, reminderId: String): String {
-        val time = (reminderTime - System.currentTimeMillis()) / 1000
+        val time = reminderTime - System.currentTimeMillis()
         val request = OneTimeWorkRequestBuilder<ReminderWorker>()
             .setInputData(createInputData(reminderId))
-            .setInitialDelay(time, TimeUnit.SECONDS)
+            .setInitialDelay(time, TimeUnit.MILLISECONDS)
             .build()
         workManager.enqueue(request)
         return request.stringId
