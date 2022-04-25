@@ -1,9 +1,10 @@
 package com.example.reminder.workers
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
-import android.app.PendingIntent.FLAG_ONE_SHOT
+import android.app.PendingIntent.*
 import android.content.Context
 import android.content.Intent
 import android.media.RingtoneManager
@@ -47,10 +48,11 @@ class ReminderWorker(ctx: Context, params: WorkerParameters): CoroutineWorker(ct
         updateReminderComplitionByIdUseCase(id)
     }
 
+    @SuppressLint("UnspecifiedImmutableFlag")
     private fun showReminderNotification(context: Context, title: String, message: String) {
         // Make a channel if necessary
         val intent = Intent(context, MainActivity::class.java).apply { addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP) }
-        val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_ONE_SHOT)
+        val pendingIntent = PendingIntent.getActivity(context, 0, intent, FLAG_UPDATE_CURRENT)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             /*
             * Create the NotificationChannel, but only on API 26+ because

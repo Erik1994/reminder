@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-abstract class BaseViewModel(private val workManager: WorkManager): ViewModel() {
+abstract class BaseViewModel(private val workManager: WorkManager) : ViewModel() {
     private val _navigationFlow = MutableStateFlow<NavigationCommand?>(null)
     val navigationFlow = _navigationFlow.asStateFlow()
 
@@ -30,17 +30,19 @@ abstract class BaseViewModel(private val workManager: WorkManager): ViewModel() 
     }
 
     protected fun enqueWorkAndReturnId(reminderTime: Long, reminderId: String): String {
-        val time = reminderTime - System.currentTimeMillis()
+        val time = (reminderTime - System.currentTimeMillis()) / 1000
         val request = OneTimeWorkRequestBuilder<ReminderWorker>()
-            .setInitialDelay(time, TimeUnit.MILLISECONDS)
             .setInputData(createInputData(reminderId))
+            .setInitialDelay(time, TimeUnit.SECONDS)
             .build()
         workManager.enqueue(request)
         return request.stringId
     }
 
-    protected fun cancelEnquedWorkByID(workId: String) = workManager.cancelWorkById(UUID.fromString(workId))
+    protected fun cancelEnquedWorkByID(workId: String) =
+        workManager.cancelWorkById(UUID.fromString(workId))
 
-    private fun createInputData(id: String): Data = Data.Builder().putString(REMINDER_ID_KEY, id).build()
+    private fun createInputData(id: String): Data =
+        Data.Builder().putString(REMINDER_ID_KEY, id).build()
 
 }

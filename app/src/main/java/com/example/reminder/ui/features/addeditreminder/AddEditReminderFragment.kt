@@ -15,6 +15,7 @@ import com.example.reminder.databinding.FragmentAddEditReminderBinding
 import com.example.reminder.ui.common.BaseFragment
 import com.example.reminder.ui.extensions.*
 import com.example.reminder.ui.features.reminders.ReminderVIewModel
+import com.example.reminder.ui.util.checkValidation
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
@@ -69,8 +70,11 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
         binding?.apply {
             saveButton.clicks()
                 .onEach {
-                    addOrUpdateReminder()
-                    viewModel.navigateBack()
+                    addOrUpdateReminder { isValid ->
+                        if (isValid) {
+                            viewModel.navigateBack()
+                        }
+                    }
                 }.launchIn(viewLifecycleOwner.lifecycleScope)
             dateTime.debounceClicks()
                 .onEach {
@@ -79,28 +83,35 @@ class AddEditReminderFragment : BaseFragment(R.layout.fragment_add_edit_reminder
         }
     }
 
-    private fun addOrUpdateReminder() {
+    private fun addOrUpdateReminder(isReadyToBack: (Boolean) -> Unit) {
         binding?.apply {
             val title = titleTv.text.toString()
             val description = descriptionTv.text.toString()
-            val dateTime = dateTime.text.toString().stringDateToMilis(dateTimeFormat())
-            reminderId?.let {  remId ->
-                val reminder = ReminderViewData(
-                    id = remId,
-                    title = title,
-                    description = description,
-                    dateTime = dateTime,
-                    workId = workId ?: emptyString(),
-                    isComplited = dateTime < System.currentTimeMillis()
-                )
-                viewModel.updateReminder(reminder)
-            } ?: run {
-                val reminder = ReminderViewData(
-                    title = title,
-                    description = description,
-                    dateTime = calendar.timeInMillis
-                )
-                viewModel.addReminder(reminder)
+            dateTime.checkValidation { isVald ->
+                if (!isVald) {
+                    isReadyToBack(isVald)
+                    return@checkValidation
+                }
+                val dateTime = dateTime.text.toString().stringDateToMilis(dateTimeFormat())
+                reminderId?.let {  remId ->
+                    val reminder = ReminderViewData(
+                        id = remId,
+                        title = title,
+                        description = description,
+                        dateTime = dateTime,
+                        workId = workId ?: emptyString(),
+                        isComplited = dateTime < System.currentTimeMillis()
+                    )
+                    viewModel.updateReminder(reminder)
+                } ?: run {
+                    val reminder = ReminderViewData(
+                        title = title,
+                        description = description,
+                        dateTime = calendar.timeInMillis
+                    )
+                    viewModel.addReminder(reminder)
+                }
+                isReadyToBack(isVald)
             }
         }
     }

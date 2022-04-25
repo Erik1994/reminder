@@ -46,8 +46,10 @@ class ReminderVIewModel(
 
     fun addReminder(reminderViewData: ReminderViewData) {
         viewModelScope.launch(appDispatchers.ioDispatcher) {
-            val workId = enqueWorkAndReturnId(reminderId = reminderViewData.id, reminderTime = reminderViewData.dateTime)
-            reminderViewData.workId = workId
+            if (!reminderViewData.isComplited) {
+                val workId = enqueWorkAndReturnId(reminderId = reminderViewData.id, reminderTime = reminderViewData.dateTime)
+                reminderViewData.workId = workId
+            }
             addReminderUseCase(reminderViewData)
         }
     }

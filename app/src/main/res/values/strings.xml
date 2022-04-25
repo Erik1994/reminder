@@ -3,6 +3,7 @@
     <string name="description">Description</string>
     <string name="date_time"><![CDATA[Date & Time]]></string>
     <string name="save">Save</string>
+    <string name="validation_error">Please fill the field</string>
     <string name="title">Title</string>
     <string name="reminder_finding_issue_massage">No reminder with given id</string>
     <string name="reminder_deleted_message">Reminder was successfully deleted</string>
